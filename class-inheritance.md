@@ -4,21 +4,21 @@ The most used way to share code among Angular components, is ES6 *class inherita
 
 A common way of using this technique is to create an abstract class and define there the methods shared by all the subclasses. A subclass may have to implement the abstract methods or override the existing ones.
 
-**Component Base class**
+**ListComponent as Base class**
 
 The Base class is very simple: we simply define the Input items.
 
-    export abstract class BaseComponent {
+    export abstract class ListComponent {
 	    @Input() items: Item[];
     }
 
-Next, we proceed and extend `BaseComponent` with two more abstract classes.
+Next, we proceed and extend `ListComponent` with two more abstract classes.
 
-**ClassOneComponent**
+**PageComponent**
 
-The component `ClassOneComponent` extends `BaseComponent` and adds functionality.
+The component `PageComponent` extends `ListComponent` and adds functionality.
 ```
-export abstract class ClassOneComponent extends BaseComponent {
+export abstract class PageComponent extends ListComponent {
     page = 0;  
     itemsPerPage = 2;
 
@@ -31,11 +31,11 @@ export abstract class ClassOneComponent extends BaseComponent {
     changePage(page: number) { ... }
 }
 ```
-**ClassTwoComponent**
+**SelectListComponent**
 
-The component `ClassTwoComponent` extends `ClassOneComponent` and adds functionality too.
+The component `SelectListComponent` extends `PageComponent` and adds functionality too.
 ```
-export abstract class ClassTwoComponent extends ClassOneComponent {
+export abstract class SelectListComponent extends PageComponent {
     @Output() selected = new EventEmitter<Item>();
     @Output() unselected = new EventEmitter<Item>();
 
@@ -47,13 +47,13 @@ export abstract class ClassTwoComponent extends ClassOneComponent {
     isItemSelected(item: Item) { ... }
 }
 ```
-**Implementation component: TheComponent**
+**Implementation component: BuyerListComponent**
 
-Finally, we create an implementation of the class `TheComponent` and extend it `ClassTwoComponent`. 
+Finally, we create an implementation of the class `BuyerListComponent` and extend it `SelectListComponent`. 
 The template and the component will have access to all the outputs and inputs we specified in the other classes.
 ```
 @Component({
-  selector: 'the-component',
+  selector: 'buyer-list',
   template: `
     <div *ngFor="let item of items | slice: start : end">
       <label>
@@ -74,5 +74,5 @@ The template and the component will have access to all the outputs and inputs we
     </div>
   `
 })
-export class TheComponent extends ClassTwoComponent {}
+export class BuyerListComponent extends SelectListComponent {}
 ```
