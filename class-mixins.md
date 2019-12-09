@@ -24,9 +24,9 @@ function themeMixin(BaseClass) {
 class TextInput extends themeMixin(BaseInput) {}
 ```
 
-## Let's build TheComponent using Mixins
+## Let's build using Mixins
 ```
-export function classOneMixin(BaseClass) {  
+export function pageMixin(BaseClass) {  
     return class extends BaseClass {  
         page = 0;  
         itemsPerPage = 2;
@@ -42,8 +42,8 @@ export function classOneMixin(BaseClass) {
 }
 ```
 ```
-export function classTwoMixin(BaseClass) {  
-    class ClassTwoComponentMixin extends BaseClass {  
+export function selectListMixin(BaseClass) {  
+    class SelectListMixin extends BaseClass {  
         @Output() selected = new EventEmitter<Item>();  
         @Output() unselected = new EventEmitter<Item>();  
 
@@ -55,19 +55,19 @@ export function classTwoMixin(BaseClass) {
         isItemSelected(item: Item) { ... }  
     }  
     
-  return ClassTwoComponentMixin;  
+  return SelectListMixin;  
 }
 ```
 Once we define all the mixins we need to compose the component, we import the mixins and pass the Base class as an argument.
 
-Then, we simply extend `TheComponent` with the mixin `TheComponentMixin`.
+Then, we simply extend `BuyerListComponent` with the mixin `BuyerListMixin`.
 ```
-const TheComponentMixin = classTwoMixin(classOneMixin(BaseComponent));
+const BuyerListMixin = pageMixin(selectListMixin(ListComponent));
 
 @Component( ... )  
-export class TheComponent extends TheComponentMixin {}
+export class BuyerListComponent extends BuyerListMixin {}
 ```
 #
 
-**While mixins also have several pitfalls, I do share the opinion that mixins are a more elegant and secure 
+**While mixins also have several pitfalls, I also share the opinion that mixins are a more elegant and secure 
 solution for multiple inheritance, at least in the long term.**
